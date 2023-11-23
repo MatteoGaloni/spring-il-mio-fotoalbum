@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.URL;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "photos")
@@ -29,6 +31,9 @@ public class Photo {
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @ManyToMany
+    private List<Category> categories = new ArrayList<>();
 
 
 //    ***GETTER SETTER***
@@ -79,5 +84,13 @@ public class Photo {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }

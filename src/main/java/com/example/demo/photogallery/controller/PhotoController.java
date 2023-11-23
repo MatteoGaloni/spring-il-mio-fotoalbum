@@ -1,6 +1,7 @@
 package com.example.demo.photogallery.controller;
 
 import com.example.demo.photogallery.model.Photo;
+import com.example.demo.photogallery.service.CategoryService;
 import com.example.demo.photogallery.service.PhotoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ public class PhotoController {
 
     @Autowired
     private PhotoService photoService;
+    @Autowired
+    private CategoryService categoryService;
 
     @GetMapping
     public String index(@RequestParam(value = "search", required = false) String search, Model model) {
@@ -31,6 +34,7 @@ public class PhotoController {
     @GetMapping("/create")
     public String create(Model model) {
         model.addAttribute("photo", new Photo());
+        model.addAttribute("categories", categoryService.getCategories());
         return "photos/create";
     }
 
@@ -42,4 +46,15 @@ public class PhotoController {
         photoService.saveNewPhoto(formPhoto);
         return "redirect:/photos";
     }
+
+    @GetMapping("edit/{id}")
+    public String edit(@PathVariable Integer id, Model model) {
+        model.addAttribute("photo", photoService.getPhotoById(id));
+        model.addAttribute("categories", categoryService.getCategories());
+        return "photos/edit";
+    }
+
+//    @PostMapping("update")
+//    public String update(@Valid @ModelAttribute(""))
+
 }
