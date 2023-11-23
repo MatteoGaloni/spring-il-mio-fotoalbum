@@ -6,6 +6,7 @@ import com.example.demo.photogallery.repository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -27,6 +28,12 @@ public class PhotoService {
         } else {
             throw new PhotoNotFoundException("Photo with id " + id + " not found");
         }
+    }
+
+    public Photo saveNewPhoto(Photo formPhoto) {
+        formPhoto.setId(null);
+        formPhoto.setCreatedAt(LocalDateTime.now());
+        return photoRepository.save(formPhoto);
     }
 
 }

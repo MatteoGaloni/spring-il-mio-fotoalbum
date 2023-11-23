@@ -1,7 +1,9 @@
 package com.example.demo.photogallery.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.validator.constraints.URL;
 
 import java.time.LocalDateTime;
 
@@ -14,13 +16,16 @@ public class Photo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank(message = "Il campo non può restare vuoto")
     private String title;
     @Lob
     private String description;
 
+    @NotBlank(message = "Il campo non può restare vuoto")
+    @URL(message = "Devi inserire un url valido")
     private String url;
 
-    private boolean isVisible;
+    private boolean visible;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -61,11 +66,11 @@ public class Photo {
     }
 
     public boolean isVisible() {
-        return isVisible;
+        return visible;
     }
 
     public void setVisible(boolean visible) {
-        isVisible = visible;
+        this.visible = visible;
     }
 
     public LocalDateTime getCreatedAt() {
