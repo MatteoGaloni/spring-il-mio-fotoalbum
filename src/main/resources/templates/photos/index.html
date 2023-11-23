@@ -30,24 +30,21 @@
                         <p th:text="${photo.description}" class="card-text"></p>
                     </div>
                     <div class="card-body">
-                        <a th:href="@{photos/show/{id}(id=${photo.id})}" class="btn btn-success card-link">Mostra dettagli</a>
-                            <a th:href="@{photos/edit/{id}(id=${photo.id})}"
-                               class="card-link btn btn-warning me-2">Modifica</a>
-                            <form method="POST" th:action="@{/photos/delete/{id}(id=${photo.id})}"
-                                  onsubmit="return confirm('Sei sicuro?')">
-                                <button type="submit" class="btn btn-danger">Cancella Foto</button>
-                            </form>
-                        </div>
+                        <a th:href="@{photos/show/{id}(id=${photo.id})}" class="btn btn-success card-link">Mostra
+                            dettagli</a>
+                        <a th:href="@{photos/edit/{id}(id=${photo.id})}"
+                           class="card-link btn btn-warning me-2">Modifica</a>
+                        <form method="POST" th:action="@{/photos/delete/{id}(id=${photo.id})}"
+                              onsubmit="return confirm('Sei sicuro?')">
+                            <button type="submit" class="btn btn-danger">Cancella Foto</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-
         <div th:if="${photoList == null or #lists.isEmpty(photoList)}" class="alert alert-danger mt-2" role="alert">
             <h3 th:text="'Non ci sono risultati da mostrare'"></h3>
         </div>
-
-
     </div>
 </main>
 </body>
