@@ -13,6 +13,8 @@ public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    private String title;
     @Lob
     private String description;
 
@@ -28,6 +30,14 @@ public class Photo {
 
     public Integer getId() {
         return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setId(Integer id) {
