@@ -46,4 +46,12 @@ public class PhotoService {
         }
     }
 
+    public void delete(Integer id) throws PhotoNotFoundException {
+        if (photoRepository.findById(id).isPresent()) {
+            photoRepository.deleteById(id);
+        } else {
+            throw new PhotoNotFoundException("Photo with id " + id + " not found");
+        }
+    }
+
 }
