@@ -1,5 +1,6 @@
 package com.example.demo.photogallery.service;
 
+import com.example.demo.photogallery.exception.CategoryNotFoundException;
 import com.example.demo.photogallery.model.Category;
 import com.example.demo.photogallery.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,5 +15,17 @@ public class CategoryService {
 
     public List<Category> getCategories() {
         return categoryRepository.findAll();
+    }
+
+    public Category saveNewCategory(Category formCategory) {
+        return categoryRepository.save(formCategory);
+    }
+
+    public void delete(Integer id) throws CategoryNotFoundException {
+        if (categoryRepository.findById(id).isPresent()) {
+            categoryRepository.deleteById(id);
+        } else {
+            throw new CategoryNotFoundException("Category with id " + id + " not found");
+        }
     }
 }

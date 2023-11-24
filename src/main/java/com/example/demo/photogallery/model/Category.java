@@ -1,5 +1,6 @@
 package com.example.demo.photogallery.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.OnDelete;
@@ -20,6 +21,7 @@ public class Category {
     @NotBlank(message = "Il campo non può restare vuoto")
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Photo> photos = new ArrayList<>();
@@ -51,5 +53,5 @@ public class Category {
         this.photos = photos;
     }
 
-    
+
 }

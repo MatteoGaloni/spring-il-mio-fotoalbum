@@ -12,3 +12,5 @@ INSERT INTO users (email, first_name, last_name, password, registered_at) VALUES
 INSERT INTO roles (id, name) VALUES(1, 'ADMIN');
 INSERT INTO users_roles (user_id, roles_id) VALUES(1, 1);
 INSERT INTO users_roles (user_id, roles_id) VALUES(2, 1);
+
+INSERT INTO messages (email, message, created_at)VALUES('fabio@mail.com', 'Buongiorno, la contatto in merito al preventivo di cui abbiamo discusso al telefono.', '2023-11-24 15:55')

@@ -4,6 +4,8 @@ import com.example.demo.photogallery.exception.PhotoNotFoundException;
 import com.example.demo.photogallery.model.Photo;
 import com.example.demo.photogallery.repository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,6 +22,13 @@ public class PhotoService {
             return photoRepository.findByTitleContainsAllIgnoreCase(search);
         }
         return photoRepository.findAll();
+    }
+
+    public Page<Photo> getPhotos(String search, Pageable pageable) {
+        if (search != null && !search.isBlank()) {
+            return photoRepository.findByTitleContainsAllIgnoreCaseAndVisible(search, true, pageable);
+        }
+        return photoRepository.findByVisible(true, pageable);
     }
 
     public Photo getPhotoById(Integer id) throws PhotoNotFoundException {

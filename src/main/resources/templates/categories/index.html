@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/resources :: head(title='Categorie')"></head>
+<body>
+<header>
+    <nav th:replace="fragments/resources :: navbar"></nav>
+</header>
+<main>
+    <div class="container">
+        <div th:if="${message} != null" th:text="${message}" class="alert alert-success alert-dismissible fade show"
+             role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <section>
+            <section>
+                <form id="category-store" class="text-white" th:action="@{/categories/store}"
+                      th:object="${category}" method="POST">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nome</label>
+                        <input type="text" class="form-control" th:field="*{name}" th:errorClass="is-invalid" id="name">
+                        <div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+                            <ul>
+                                <li th:each="error : ${#fields.errors('name')}" th:text="${error}"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-primary" type="submit">Aggiungi Categoria</button>
+                        <button class="btn btn-danger" type="reset">Svuota campo</button>
+                    </div>
+                </form>
+
+            </section>
+            <h1 class="text-center py-2">Lista Categorie</h1>
+            <ul class="list-group">
+                <li class="list-group-item" th:each="category : ${categoryList}">
+                    <div class="d-flex justify-content-between">
+                        <span th:text="${category.name}"></span>
+                        <form method="POST" th:action="@{/categories/delete/{id}(id=${category.id})}"
+                              onsubmit="return confirm('Sei sicuro?')">
+                            <button type="submit" class="btn btn-danger">Cancella Ingrediente</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </div>
+</main>
+</body>
+</html>
