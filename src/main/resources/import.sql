@@ -6,3 +6,9 @@ INSERT INTO categories(name)VALUES("volatili")
 INSERT INTO photos_categories(photos_id, categories_id)VALUES(1,1)
 INSERT INTO photos_categories(photos_id, categories_id)VALUES(2,2)
 INSERT INTO photos_categories(photos_id, categories_id)VALUES(3,2)
+INSERT INTO users (email, first_name, last_name, password, registered_at)VALUES('mario@mail.com', 'Mario', 'Rossi', '{noop}prova', '2023-11-24 10:21')
+INSERT INTO users (email, first_name, last_name, password, registered_at) VALUES('enrica@email.com', 'Enrica', 'Verdi','{noop}prova', '2023-11-20 15:43');
+
+INSERT INTO roles (id, name) VALUES(1, 'ADMIN');
+INSERT INTO users_roles (user_id, roles_id) VALUES(1, 1);
+INSERT INTO users_roles (user_id, roles_id) VALUES(2, 1);
