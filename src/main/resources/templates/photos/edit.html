@@ -11,7 +11,9 @@
         <hr>
         <div class="row">
             <div class="col">
-                <form id="photo-store" th:action="@{/photos/update}" th:object="${photo}" method="POST">
+                <form id="photo-update" th:action="@{/photos/update}" th:object="${photo}" method="POST">
+                    <!--                    hidden input value passing photoId in order to update changes-->
+                    <input th:field="*{id}" hidden type="text">
                     <div class="mb-3">
                         <label for="title" class="form-label">Titolo</label>
                         <input type="text" class="form-control" th:field="*{title}" th:errorClass="is-invalid"

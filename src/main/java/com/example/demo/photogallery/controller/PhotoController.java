@@ -1,14 +1,17 @@
 package com.example.demo.photogallery.controller;
 
+import com.example.demo.photogallery.exception.PhotoNotFoundException;
 import com.example.demo.photogallery.model.Photo;
 import com.example.demo.photogallery.service.CategoryService;
 import com.example.demo.photogallery.service.PhotoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("/photos")
@@ -43,8 +46,12 @@ public class PhotoController {
         if (bindingResult.hasErrors()) {
             return "photos/create";
         }
-        photoService.saveNewPhoto(formPhoto);
-        return "redirect:/photos";
+        try {
+            photoService.saveNewPhoto(formPhoto);
+            return "redirect:/photos";
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("edit/{id}")
@@ -54,7 +61,18 @@ public class PhotoController {
         return "photos/edit";
     }
 
-//    @PostMapping("update")
-//    public String update(@Valid @ModelAttribute(""))
+    @PostMapping("update")
+    public String update(@Valid @ModelAttribute("photo") Photo formPhoto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoryService.getCategories());
+            return "photos/edit";
+        }
+        try {
+            photoService.editPhoto(formPhoto);
+            return "redirect:/photos";
+        } catch (PhotoNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
 
 }

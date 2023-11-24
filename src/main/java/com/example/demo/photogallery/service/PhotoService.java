@@ -36,4 +36,14 @@ public class PhotoService {
         return photoRepository.save(formPhoto);
     }
 
+    public Photo editPhoto(Photo formPhoto) throws PhotoNotFoundException {
+        if (photoRepository.findById(formPhoto.getId()).isPresent()) {
+            Photo photoToEdit = photoRepository.findById(formPhoto.getId()).get();
+            formPhoto.setCreatedAt(photoToEdit.getCreatedAt());
+            return photoRepository.save(formPhoto);
+        } else {
+            throw new PhotoNotFoundException("Photo with id " + formPhoto.getId() + " not found");
+        }
+    }
+
 }
