@@ -2,10 +2,14 @@ package com.example.demo.photogallery.service;
 
 import com.example.demo.photogallery.exception.PhotoNotFoundException;
 import com.example.demo.photogallery.model.Photo;
+import com.example.demo.photogallery.model.User;
 import com.example.demo.photogallery.repository.PhotoRepository;
+import com.example.demo.photogallery.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,11 +21,22 @@ public class PhotoService {
     @Autowired
     private PhotoRepository photoRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public List<Photo> getPhotos(String search) {
+        User authenticatedUser = getAuthenticatedUser();
         if (search != null && !search.isBlank()) {
-            return photoRepository.findByTitleContainsAllIgnoreCase(search);
+            return photoRepository.findByUserAndTitleContainsAllIgnoreCase(authenticatedUser, search);
         }
-        return photoRepository.findAll();
+        return photoRepository.findByUser(authenticatedUser);
+    }
+
+    private User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName();
+        User authenticatedUser = userRepository.findByEmail(userEmail).get();
+        return authenticatedUser;
     }
 
     public Page<Photo> getPhotos(String search, Pageable pageable) {
@@ -42,6 +57,7 @@ public class PhotoService {
     public Photo saveNewPhoto(Photo formPhoto) {
         formPhoto.setId(null);
         formPhoto.setCreatedAt(LocalDateTime.now());
+        formPhoto.setUser(getAuthenticatedUser());
         return photoRepository.save(formPhoto);
     }
 

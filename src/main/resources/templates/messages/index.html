@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="fragments/resources :: head(title='PhotosGallery')"></head>
+<body>
+<header>
+    <nav th:replace="fragments/resources :: navbar"></nav>
+</header>
+<main>
+    <div class="container">
+        <h1>Messaggi ricevuti</h1>
+        <hr>
+        <div th:each="message : ${messageList}" class="card mb-2">
+            <div class="card-header" th:text="${message.email}">
+
+            </div>
+            <div class="card-body">
+                <p th:text="${message.message}" class="card-text"></p>
+            </div>
+        </div>
+
+        <div th:if="${messageList == null or #lists.isEmpty(messageList)}" class="alert alert-danger mt-2" role="alert">
+            <h3 th:text="'Non ci sono risultati da mostrare'"></h3>
+        </div>
+    </div>
+</main>
+</body>
+</html>

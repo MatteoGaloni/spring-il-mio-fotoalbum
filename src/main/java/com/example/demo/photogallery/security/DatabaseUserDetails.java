@@ -45,6 +45,7 @@ public class DatabaseUserDetails implements UserDetails {
         return this.username;
     }
 
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

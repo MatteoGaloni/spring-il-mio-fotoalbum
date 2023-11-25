@@ -1,10 +1,13 @@
 package com.example.demo.photogallery.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,10 +33,22 @@ public class User {
 
     private LocalDateTime registeredAt;
 
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @JsonIgnore
+    private List<Photo> photos = new ArrayList<>();
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
 
     //    ***GETTER SETTER***
+
+    public List<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
+    }
 
     public Integer getId() {
         return id;
