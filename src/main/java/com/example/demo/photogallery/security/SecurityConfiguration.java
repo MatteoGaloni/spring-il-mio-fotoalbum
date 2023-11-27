@@ -33,7 +33,8 @@ public class SecurityConfiguration {
 
         http
                 .authorizeHttpRequests()
-                .requestMatchers("/photos", "/photos/**").hasAnyAuthority("ADMIN")
+                .requestMatchers("/photos/delete/**").hasAnyAuthority("ADMIN")
+                .requestMatchers("/photos", "/photos/**").hasAnyAuthority("ADMIN", "SUPERADMIN")
                 .requestMatchers("/**").permitAll()
                 .and().formLogin().and().logout();
         http.csrf().disable();

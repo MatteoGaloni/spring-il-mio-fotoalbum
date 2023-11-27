@@ -24,20 +24,28 @@ public class PhotoService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<Photo> getPhotos(String search) {
-        User authenticatedUser = getAuthenticatedUser();
-        if (search != null && !search.isBlank()) {
-            return photoRepository.findByUserAndTitleContainsAllIgnoreCase(authenticatedUser, search);
-        }
-        return photoRepository.findByUser(authenticatedUser);
-    }
-
-    private User getAuthenticatedUser() {
+    public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
         User authenticatedUser = userRepository.findByEmail(userEmail).get();
         return authenticatedUser;
     }
+
+    public List<Photo> getPhotos(String search) {
+        User authenticatedUser = getAuthenticatedUser();
+        boolean isSuperAdmin = authenticatedUser.getRoles().stream()
+                .anyMatch(role -> role.getName().equals("SUPERADMIN"));
+        if (isSuperAdmin) {
+            return (search != null && !search.isBlank())
+                    ? photoRepository.findByTitleContainsAllIgnoreCase(search)
+                    : photoRepository.findAll();
+        } else {
+            return (search != null && !search.isBlank())
+                    ? photoRepository.findByUserAndTitleContainsAllIgnoreCase(authenticatedUser, search)
+                    : photoRepository.findByUser(authenticatedUser);
+        }
+    }
+
 
     public Page<Photo> getPhotos(String search, Pageable pageable) {
         if (search != null && !search.isBlank()) {

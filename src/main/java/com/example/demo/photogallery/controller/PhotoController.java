@@ -2,6 +2,7 @@ package com.example.demo.photogallery.controller;
 
 import com.example.demo.photogallery.exception.PhotoNotFoundException;
 import com.example.demo.photogallery.model.Photo;
+import com.example.demo.photogallery.repository.UserRepository;
 import com.example.demo.photogallery.service.CategoryService;
 import com.example.demo.photogallery.service.PhotoService;
 import jakarta.validation.Valid;
@@ -13,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.nio.file.AccessDeniedException;
+
 @Controller
 @RequestMapping("/photos")
 public class PhotoController {
@@ -22,6 +25,10 @@ public class PhotoController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private UserRepository userRepository;
+
+
     @GetMapping
     public String index(@RequestParam(value = "search", required = false) String search, Model model) {
         model.addAttribute("photoList", photoService.getPhotos(search));
@@ -29,7 +36,8 @@ public class PhotoController {
     }
 
     @GetMapping("/show/{id}")
-    public String show(@PathVariable Integer id, Model model) {
+    public String show(@PathVariable Integer id, Model model) throws AccessDeniedException {
+//        User user = userRepository.findById(id).get();
         model.addAttribute("photo", photoService.getPhotoById(id));
         return "photos/show";
     }
