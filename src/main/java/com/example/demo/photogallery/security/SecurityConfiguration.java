@@ -34,6 +34,10 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests()
                 .requestMatchers("/photos/delete/**").hasAnyAuthority("ADMIN")
+                .requestMatchers("/photos/edit/**").hasAnyAuthority("ADMIN")
+                .requestMatchers("/photos/update/visibility").hasAnyAuthority("SUPERADMIN")
+                .requestMatchers("/photos/update/**").hasAnyAuthority("ADMIN")
+                .requestMatchers("/photos/create").hasAnyAuthority("ADMIN")
                 .requestMatchers("/photos", "/photos/**").hasAnyAuthority("ADMIN", "SUPERADMIN")
                 .requestMatchers("/**").permitAll()
                 .and().formLogin().and().logout();

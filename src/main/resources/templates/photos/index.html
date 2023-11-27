@@ -31,22 +31,27 @@
                     <div class="card-body">
                         <h5 th:text="${photo.title}" class="card-title"></h5>
                         <p th:text="${photo.description}" class="card-text"></p>
-                        <!--                        show userEmail only to SuperAdmin-->
+                        <!--                        show userEmail and createdAt only to SuperAdmin-->
                         <p sec:authorize="hasAuthority('SUPERADMIN')" th:text="${photo.getUserEmail}"
                            class="card-text"></p>
                         <p sec:authorize="hasAuthority('SUPERADMIN')"
                            th:text="${#temporals.format(photo.createdAt, 'dd-MM-yyyy')}"
                            class="card-text"></p>
+                        <p th:if="${photo.visible}">
+                            Foto Visibile
+                        </p>
+                        <p th:if="${!photo.visible}">
+                            Foto Non Visibile
+                        </p>
 
-                        <!--                        *************************-->
-
-                        <a th:href="@{photos/show/{id}(id=${photo.id})}" class="btn btn-success card-link">Mostra
-                            dettagli</a>
-                        <a th:href="@{photos/edit/{id}(id=${photo.id})}"
-                           class="card-link btn btn-warning me-2">Modifica</a>
-                        <hr>
-                        <div>
-                            <form sec:authorize="hasAuthority('ADMIN')" method="POST"
+                        <a th:href="@{photos/show/{id}(id=${photo.id})}" class="btn btn-success card-link">
+                            <span sec:authorize="hasAuthority('SUPERADMIN')">Modifica visibilità</span>
+                            <span sec:authorize="hasAuthority('ADMIN')">Mostra dettagli</span>
+                        </a>
+                        <div class="d-flex mt-2" sec:authorize="hasAuthority('ADMIN')">
+                            <a th:href="@{photos/edit/{id}(id=${photo.id})}"
+                               class="card-link btn btn-warning me-2">Modifica</a>
+                            <form method="POST"
                                   th:action="@{/photos/delete/{id}(id=${photo.id})}"
                                   onsubmit="return confirm('Sei sicuro?')">
                                 <button type="submit" class="btn btn-danger">Cancella Foto</button>

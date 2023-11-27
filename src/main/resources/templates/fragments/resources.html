@@ -27,10 +27,10 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/photos}">Gallery</a>
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
                     <a class="nav-link" th:href="@{/photos/create}">Aggiungi una nuova foto</a>
                 </li>
-                <li class="nav-item">
+                <li sec:authorize="hasAuthority('SUPERADMIN')" class="nav-item">
                     <a class="nav-link" th:href="@{/categories}">Gestisci Categorie</a>
                 </li>
                 <li class="nav-item">

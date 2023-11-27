@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.nio.file.AccessDeniedException;
 
@@ -38,8 +39,10 @@ public class PhotoController {
     @GetMapping("/show/{id}")
     public String show(@PathVariable Integer id, Model model) throws AccessDeniedException {
 //        User user = userRepository.findById(id).get();
+        photoService.isAuthorized(id);
         model.addAttribute("photo", photoService.getPhotoById(id));
         return "photos/show";
+
     }
 
     @GetMapping("/create")
@@ -64,6 +67,7 @@ public class PhotoController {
 
     @GetMapping("edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
+        photoService.isAuthorized(id);
         model.addAttribute("photo", photoService.getPhotoById(id));
         model.addAttribute("categories", categoryService.getCategories());
         return "photos/edit";
@@ -71,6 +75,7 @@ public class PhotoController {
 
     @PostMapping("update")
     public String update(@Valid @ModelAttribute("photo") Photo formPhoto, BindingResult bindingResult, Model model) {
+        photoService.isAuthorized(formPhoto.getId());
         if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryService.getCategories());
             return "photos/edit";
@@ -84,9 +89,10 @@ public class PhotoController {
     }
 
     @PostMapping("update/visibility")
-    public String updateVisibility(@ModelAttribute("photo") Photo formPhoto, Model model) {
+    public String updateVisibility(@ModelAttribute("photo") Photo formPhoto, Model model, RedirectAttributes redirectAttributes) {
         try {
             photoService.editVisibility(formPhoto);
+            redirectAttributes.addFlashAttribute("message", "Visibilità modificata con successo");
             return "redirect:/photos/show/" + formPhoto.getId();
         } catch (PhotoNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -95,6 +101,7 @@ public class PhotoController {
 
     @PostMapping("delete/{id}")
     public String delete(@PathVariable Integer id) {
+        photoService.isAuthorized(id);
         try {
             photoService.delete(id);
             return "redirect:/photos";

@@ -17,7 +17,7 @@ public class PhotoRestController {
     PhotoService photoService;
 
     @GetMapping
-    public Page<Photo> index(@PageableDefault(page = 0, size = 10) Pageable pageable,
+    public Page<Photo> index(@PageableDefault(page = 0, size = 20) Pageable pageable,
                              @RequestParam(value = "search", required = false) String search) {
         return photoService.getPhotos(search, pageable);
     }

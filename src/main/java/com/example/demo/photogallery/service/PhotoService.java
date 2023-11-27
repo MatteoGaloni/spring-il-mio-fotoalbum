@@ -8,9 +8,11 @@ import com.example.demo.photogallery.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,10 +33,10 @@ public class PhotoService {
         return authenticatedUser;
     }
 
+
     public List<Photo> getPhotos(String search) {
         User authenticatedUser = getAuthenticatedUser();
-        boolean isSuperAdmin = authenticatedUser.getRoles().stream()
-                .anyMatch(role -> role.getName().equals("SUPERADMIN"));
+        boolean isSuperAdmin = isSuperAdmin(authenticatedUser);
         if (isSuperAdmin) {
             return (search != null && !search.isBlank())
                     ? photoRepository.findByTitleContainsAllIgnoreCase(search)
@@ -44,6 +46,20 @@ public class PhotoService {
                     ? photoRepository.findByUserAndTitleContainsAllIgnoreCase(authenticatedUser, search)
                     : photoRepository.findByUser(authenticatedUser);
         }
+    }
+
+    public void isAuthorized(Integer id) {
+        Photo photoToCheck = getPhotoById(id);
+        User authenticatdUser = getAuthenticatedUser();
+        if (!photoToCheck.getUser().getId().equals(authenticatdUser.getId()) && !isSuperAdmin(authenticatdUser)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+    }
+
+    private static boolean isSuperAdmin(User authenticatedUser) {
+        return authenticatedUser.getRoles().stream()
+                .anyMatch(role -> role.getName().equals("SUPERADMIN"));
     }
 
 
@@ -62,6 +78,7 @@ public class PhotoService {
         }
     }
 
+
     public Photo saveNewPhoto(Photo formPhoto) {
         formPhoto.setId(null);
         formPhoto.setCreatedAt(LocalDateTime.now());
@@ -73,6 +90,7 @@ public class PhotoService {
         if (photoRepository.findById(formPhoto.getId()).isPresent()) {
             Photo photoToEdit = photoRepository.findById(formPhoto.getId()).get();
             formPhoto.setCreatedAt(photoToEdit.getCreatedAt());
+            formPhoto.setUser(getAuthenticatedUser());
             return photoRepository.save(formPhoto);
         } else {
             throw new PhotoNotFoundException("Photo with id " + formPhoto.getId() + " not found");
