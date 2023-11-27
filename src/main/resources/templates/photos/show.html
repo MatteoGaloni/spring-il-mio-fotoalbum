@@ -23,6 +23,32 @@
                     </div>
                 </div>
             </div>
+            <div sec:authorize="hasAuthority('SUPERADMIN')" class="col">
+                <form id="photo-update" th:action="@{/photos/update/visibility}" th:object="${photo}" method="POST">
+                    <input th:field="*{id}" hidden type="text">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="visible"
+                               id="isVisibleOn"
+                               value="true"
+                               th:checked="*{visible}">
+                        <label class="form-check-label" for="isVisibleOn">
+                            Visibile nella Gallery
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="visible"
+                               id="isVisibleOff"
+                               value="false"
+                               th:checked="*{!visible}">
+                        <label class="form-check-label" for="isVisibleOff">
+                            Nascosta nella Gallery
+                        </label>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-primary" type="submit">Modifica la foto</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </main>

@@ -83,6 +83,16 @@ public class PhotoController {
         }
     }
 
+    @PostMapping("update/visibility")
+    public String updateVisibility(@ModelAttribute("photo") Photo formPhoto, Model model) {
+        try {
+            photoService.editVisibility(formPhoto);
+            return "redirect:/photos/show/" + formPhoto.getId();
+        } catch (PhotoNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping("delete/{id}")
     public String delete(@PathVariable Integer id) {
         try {

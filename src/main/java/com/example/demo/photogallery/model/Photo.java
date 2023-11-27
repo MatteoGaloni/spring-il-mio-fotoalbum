@@ -104,4 +104,8 @@ public class Photo {
     public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
+
+    public String getUserEmail() {
+        return getUser().getEmail();
+    }
 }

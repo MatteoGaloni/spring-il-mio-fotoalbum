@@ -1,4 +1,4 @@
--- Utenti
+
 INSERT INTO users (email, first_name, last_name, password, registered_at) VALUES('giulia@mail.com', 'Giulia', 'Bianchi', '{noop}prova', '2023-11-25 09:30');
 
 INSERT INTO users (email, first_name, last_name, password, registered_at) VALUES('luca@email.com', 'Luca', 'Neri', '{noop}prova', '2023-11-25 10:45');

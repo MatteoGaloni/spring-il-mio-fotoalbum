@@ -31,16 +31,27 @@
                     <div class="card-body">
                         <h5 th:text="${photo.title}" class="card-title"></h5>
                         <p th:text="${photo.description}" class="card-text"></p>
+                        <!--                        show userEmail only to SuperAdmin-->
+                        <p sec:authorize="hasAuthority('SUPERADMIN')" th:text="${photo.getUserEmail}"
+                           class="card-text"></p>
+                        <p sec:authorize="hasAuthority('SUPERADMIN')"
+                           th:text="${#temporals.format(photo.createdAt, 'dd-MM-yyyy')}"
+                           class="card-text"></p>
+
+                        <!--                        *************************-->
 
                         <a th:href="@{photos/show/{id}(id=${photo.id})}" class="btn btn-success card-link">Mostra
                             dettagli</a>
                         <a th:href="@{photos/edit/{id}(id=${photo.id})}"
                            class="card-link btn btn-warning me-2">Modifica</a>
                         <hr>
-                        <form method="POST" th:action="@{/photos/delete/{id}(id=${photo.id})}"
-                              onsubmit="return confirm('Sei sicuro?')">
-                            <button type="submit" class="btn btn-danger">Cancella Foto</button>
-                        </form>
+                        <div>
+                            <form sec:authorize="hasAuthority('ADMIN')" method="POST"
+                                  th:action="@{/photos/delete/{id}(id=${photo.id})}"
+                                  onsubmit="return confirm('Sei sicuro?')">
+                                <button type="submit" class="btn btn-danger">Cancella Foto</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

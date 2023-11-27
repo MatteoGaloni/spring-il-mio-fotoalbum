@@ -79,6 +79,17 @@ public class PhotoService {
         }
     }
 
+    public void editVisibility(Photo formPhoto) throws PhotoNotFoundException {
+        if (photoRepository.findById(formPhoto.getId()).isPresent()) {
+            Photo photoToEdit = photoRepository.findById(formPhoto.getId()).get();
+            photoToEdit.setVisible(formPhoto.isVisible());
+            photoRepository.save(photoToEdit);
+        } else {
+            throw new PhotoNotFoundException("Photo with id " + formPhoto.getId() + " not found");
+        }
+    }
+
+
     public void delete(Integer id) throws PhotoNotFoundException {
         if (photoRepository.findById(id).isPresent()) {
             photoRepository.deleteById(id);
