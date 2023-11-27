@@ -53,8 +53,10 @@ public class PhotoController {
     }
 
     @PostMapping("/store")
-    public String store(@Valid @ModelAttribute("photo") Photo formPhoto, BindingResult bindingResult) {
+    public String store(@Valid @ModelAttribute("photo") Photo formPhoto,
+                        BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoryService.getCategories());
             return "photos/create";
         }
         try {

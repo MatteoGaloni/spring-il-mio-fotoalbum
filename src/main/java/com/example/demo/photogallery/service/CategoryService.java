@@ -17,8 +17,8 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category saveNewCategory(Category formCategory) {
-        return categoryRepository.save(formCategory);
+    public void saveNewCategory(Category formCategory) {
+        categoryRepository.save(formCategory);
     }
 
     public void delete(Integer id) throws CategoryNotFoundException {

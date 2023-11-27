@@ -36,7 +36,10 @@ public class User {
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     @JsonIgnore
     private List<Photo> photos = new ArrayList<>();
-
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @JsonIgnore
+    private List<Message> messages = new ArrayList<>();
+    
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
 

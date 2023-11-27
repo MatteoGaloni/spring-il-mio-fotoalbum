@@ -42,6 +42,6 @@ INSERT INTO users_roles (user_id, roles_id) VALUES(1, 1);
 INSERT INTO users_roles (user_id, roles_id) VALUES(2, 1);
 INSERT INTO users_roles (user_id, roles_id) VALUES(3, 1);
 
-INSERT INTO messages (email, message, created_at)VALUES('fabio@mail.com', 'Buongiorno, la contatto in merito al preventivo di cui abbiamo discusso al telefono.', '2023-11-24 15:55')
-INSERT INTO messages (email, message, created_at)VALUES('laura@mail.com', 'Buongiorno, la contatto in merito al preventivo di cui abbiamo discusso al telefono.', '2023-11-24 15:55')
-INSERT INTO messages (email, message, created_at)VALUES('sonia@mail.com', 'Buongiorno, la contatto in merito al preventivo di cui abbiamo discusso al telefono.', '2023-11-24 15:55')
+INSERT INTO messages (email, message, created_at, user_id)VALUES('fabio@mail.com', 'Buongiorno Giulia, la contatto in merito al preventivo di cui abbiamo discusso al telefono.', '2023-11-24 15:55', 1)
+INSERT INTO messages (email, message, created_at, user_id)VALUES('laura@mail.com', 'Buongiorno Luca, la contatto in merito al preventivo di cui abbiamo discusso al telefono.', '2023-11-24 15:55', 2)
+INSERT INTO messages (email, message, created_at, user_id)VALUES('sonia@mail.com', 'Buongiorno Francesca, la contatto in merito al preventivo di cui abbiamo discusso al telefono.', '2023-11-24 15:55', 3)

@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,17 +24,13 @@ public class PhotoService {
     @Autowired
     private UserRepository userRepository;
 
-    public User getAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
-        User authenticatedUser = userRepository.findByEmail(userEmail).get();
-        return authenticatedUser;
-    }
+    @Autowired
+    private UserService userService;
 
 
     public List<Photo> getPhotos(String search) {
-        User authenticatedUser = getAuthenticatedUser();
-        boolean isSuperAdmin = isSuperAdmin(authenticatedUser);
+        User authenticatedUser = userService.getAuthenticatedUser();
+        boolean isSuperAdmin = userService.isUserSuperAdmin(authenticatedUser);
         if (isSuperAdmin) {
             return (search != null && !search.isBlank())
                     ? photoRepository.findByTitleContainsAllIgnoreCase(search)
@@ -50,16 +44,11 @@ public class PhotoService {
 
     public void isAuthorized(Integer id) {
         Photo photoToCheck = getPhotoById(id);
-        User authenticatdUser = getAuthenticatedUser();
-        if (!photoToCheck.getUser().getId().equals(authenticatdUser.getId()) && !isSuperAdmin(authenticatdUser)) {
+        User authenticatdUser = userService.getAuthenticatedUser();
+        if (!photoToCheck.getUser().getId().equals(authenticatdUser.getId()) && !userService.isUserSuperAdmin(authenticatdUser)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
-    }
-
-    private static boolean isSuperAdmin(User authenticatedUser) {
-        return authenticatedUser.getRoles().stream()
-                .anyMatch(role -> role.getName().equals("SUPERADMIN"));
     }
 
 
@@ -79,18 +68,18 @@ public class PhotoService {
     }
 
 
-    public Photo saveNewPhoto(Photo formPhoto) {
+    public void saveNewPhoto(Photo formPhoto) {
         formPhoto.setId(null);
         formPhoto.setCreatedAt(LocalDateTime.now());
-        formPhoto.setUser(getAuthenticatedUser());
-        return photoRepository.save(formPhoto);
+        formPhoto.setUser(userService.getAuthenticatedUser());
+        photoRepository.save(formPhoto);
     }
 
     public Photo editPhoto(Photo formPhoto) throws PhotoNotFoundException {
         if (photoRepository.findById(formPhoto.getId()).isPresent()) {
             Photo photoToEdit = photoRepository.findById(formPhoto.getId()).get();
             formPhoto.setCreatedAt(photoToEdit.getCreatedAt());
-            formPhoto.setUser(getAuthenticatedUser());
+            formPhoto.setUser(userService.getAuthenticatedUser());
             return photoRepository.save(formPhoto);
         } else {
             throw new PhotoNotFoundException("Photo with id " + formPhoto.getId() + " not found");

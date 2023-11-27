@@ -16,7 +16,6 @@ public class MessageRestController {
 
     @PostMapping
     public Message create(@Valid @RequestBody Message message) {
-
         return messageService.saveMessage(message);
     }
 

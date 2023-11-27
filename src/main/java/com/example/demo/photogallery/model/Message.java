@@ -22,8 +22,19 @@ public class Message {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @ManyToOne
+    private User user;
+
 
 //    *****************************
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
