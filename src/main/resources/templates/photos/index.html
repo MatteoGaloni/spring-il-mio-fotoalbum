@@ -7,7 +7,7 @@
 </header>
 <main>
     <div class="container">
-        <h1>Photo Gallery</h1>
+        <h1 class="display-4">Photo Gallery</h1>
         <!--        add input search in order to filter result by name-->
         <form th:action="@{/photos}" method="GET">
             <div class="input-group">
@@ -19,42 +19,45 @@
                 <button type="submit" class="btn btn-primary">Cerca</button>
             </div>
         </form>
-        <div class="row row-cols-lg-2">
+        <div class="row">
             <div th:if="${photoList != null}" th:each="photo : ${photoList}"
                  class="my-2 col d-flex justify-content-center">
                 <div class="card" style="width: 30rem;">
-                    <img th:src="${photo.url}" class="card-img-top" alt="photo">
+                    <img th:src="${photo.url}" class="custom-img card-img-top" alt="photo">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" th:each="category : ${photo.categories}"
                             th:text="${category.name}"></li>
                     </ul>
                     <div class="card-body">
                         <h5 th:text="${photo.title}" class="card-title"></h5>
-                        <p th:text="${photo.description}" class="card-text"></p>
                         <!--                        show userEmail and createdAt only to SuperAdmin-->
-                        <p sec:authorize="hasAuthority('SUPERADMIN')" th:text="${photo.getUserEmail}"
-                           class="card-text"></p>
-                        <p sec:authorize="hasAuthority('SUPERADMIN')"
-                           th:text="${#temporals.format(photo.createdAt, 'dd-MM-yyyy')}"
-                           class="card-text"></p>
-                        <p th:if="${photo.visible}">
-                            Foto Visibile
-                        </p>
-                        <p th:if="${!photo.visible}">
-                            Foto Non Visibile
-                        </p>
+                        <h6 sec:authorize="hasAuthority('SUPERADMIN')" th:text="${photo.getUserEmail}"
+                            class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                        <p th:text="${photo.description}" class="card-text"></p>
 
-                        <a th:href="@{photos/show/{id}(id=${photo.id})}" class="btn btn-success card-link">
+                        <div class="d-flex text-muted">
+                            <p th:text="${#temporals.format(photo.createdAt, 'dd-MM-yyyy')}"
+                               class="card-text"></p>
+                            <p class="ms-3" th:if="${photo.visible}">
+                                Foto Visibile
+                            </p>
+                            <p class="ms-3" th:if="${!photo.visible}">
+                                Foto Non Visibile
+                            </p>
+                        </div>
+
+                        <a th:href="@{photos/show/{id}(id=${photo.id})}"
+                           class="btn btn-outline-success btn-md card-link">
                             <span sec:authorize="hasAuthority('SUPERADMIN')">Modifica visibilità</span>
                             <span sec:authorize="hasAuthority('ADMIN')">Mostra dettagli</span>
                         </a>
-                        <div class="d-flex mt-2" sec:authorize="hasAuthority('ADMIN')">
+                        <div class="d-flex mt-2 justify-content-between" sec:authorize="hasAuthority('ADMIN')">
                             <a th:href="@{photos/edit/{id}(id=${photo.id})}"
-                               class="card-link btn btn-warning me-2">Modifica</a>
+                               class="card-link btn btn-outline-warning btn-md me-2">Modifica</a>
                             <form method="POST"
                                   th:action="@{/photos/delete/{id}(id=${photo.id})}"
                                   onsubmit="return confirm('Sei sicuro?')">
-                                <button type="submit" class="btn btn-danger">Cancella Foto</button>
+                                <button type="submit" class="btn btn-outline-danger btn-md">Cancella</button>
                             </form>
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <!--Create a head fragment block passing title as parameter-->
 
 <head th:fragment="head(title)">
@@ -9,10 +9,11 @@
     <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.4.2/css/all.min.css}">
     <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}">
     <script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}" defer></script>
+    <link rel="stylesheet" href="/style.css">
     <title th:text="${title}"></title>
 </head>
 
-<nav th:fragment="navbar" class="navbar navbar-expand-lg bg-body-tertiary">
+<nav th:fragment="navbar" class="navbar fixed-top navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/photos}">
             <i class="fa-solid fa-camera-retro"></i>

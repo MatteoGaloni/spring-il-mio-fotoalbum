@@ -1,0 +1,12 @@
+body{
+background-color: #FFFAFA;
+}
+main{
+margin-top: 60px;
+}
+
+
+.custom-img{
+    height: 550px;
+    object-fit: cover;
+}
