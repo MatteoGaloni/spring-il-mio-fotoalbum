@@ -13,6 +13,7 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+
     public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
