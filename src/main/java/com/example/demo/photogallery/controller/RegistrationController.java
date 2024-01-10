@@ -28,6 +28,7 @@ public class RegistrationController {
     @Autowired
     private RoleRepository roleRepository;
 
+
     @GetMapping("/registration")
     public String showRegistrationForm(Model model) {
         User user = new User();

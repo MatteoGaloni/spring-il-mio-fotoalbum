@@ -1,34 +1,34 @@
-<html>
-<body>
+<html xmlns:th="https://www.thymeleaf.org">
+<head th:insert="fragments/resources :: head(title='Registration')"></head>
+<body class="container mt-5">
 <h1>Form</h1>
-<form th:action="@{/user/registration}" th:object="${user}" method="POST" enctype="utf8">
-    <div>
-        <label>Firstname</label>
-        <input th:field="*{firstName}"/>
-        <p th:each="error: ${#fields.errors('firstName')}"
-           th:text="${error}">Validation error</p>
+<form th:action="@{/user/registration}" th:object="${user}" method="POST" enctype="utf8" class="mb-3">
+    <div class="mb-3">
+        <label class="form-label">Firstname</label>
+        <input th:field="*{firstName}" class="form-control"/>
+        <p th:each="error: ${#fields.errors('firstName')}" class="text-danger" th:text="${error}">Validation error</p>
     </div>
-    <div>
-        <label>Lastname</label>
-        <input th:field="*{lastName}"/>
-        <p th:each="error : ${#fields.errors('lastName')}"
-           th:text="${error}">Validation error</p>
+    <div class="mb-3">
+        <label class="form-label">Lastname</label>
+        <input th:field="*{lastName}" class="form-control"/>
+        <p th:each="error : ${#fields.errors('lastName')}" class="text-danger" th:text="${error}">Validation error</p>
     </div>
-    <div>
-        <label>Email</label>
-        <input type="email" th:field="*{email}"/>
-        <p th:each="error : ${#fields.errors('email')}"
-           th:text="${error}">Validation error</p>
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" th:field="*{email}" class="form-control"/>
+        <p th:each="error : ${#fields.errors('email')}" class="text-danger" th:text="${error}">Validation error</p>
     </div>
-    <div>
-        <label>Password</label>
-        <input type="password" th:field="*{password}"/>
-        <p th:each="error : ${#fields.errors('password')}"
-           th:text="${error}">Validation error</p>
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" th:field="*{password}" class="form-control"/>
+        <p th:each="error : ${#fields.errors('password')}" class="text-danger" th:text="${error}">Validation error</p>
     </div>
-    <button type="submit">submit</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
-<a th:href="@{/login.html}">login</a>
+<a th:href="@{/login}" class="btn btn-secondary">Login</a>
+
+<!-- Aggiungi il link al file JavaScript di Bootstrap (opzionale) -->
+<script src="/bootstrap.min.js"></script>
 </body>
 </html>
